@@ -12,11 +12,6 @@ struct QuizView: View {
         QuizItem(question: "地球は太陽の周りを何年で一周する？", options: ["1年", "30日", "10年"], correctAnswerIndex: 0),
         QuizItem(question: "プログラミング言語Swiftを開発した企業は？", options: ["Apple", "Microsoft", "Google"], correctAnswerIndex: 0),
         QuizItem(question: "富士山の高さに最も近い数値は？", options: ["1,500m", "3,776m", "5,000m"], correctAnswerIndex: 1),
-        QuizItem(question: "円の面積を求める公式は？", options: ["πr²", "2πr", "πd"], correctAnswerIndex: 0),
-        QuizItem(question: "世界で最も話されている言語は？", options: ["英語", "スペイン語", "中国語"], correctAnswerIndex: 2),
-        QuizItem(question: "電気の単位「V」は何の略？", options: ["ボルテージ", "バイタル", "ビジョン"], correctAnswerIndex: 0),
-        QuizItem(question: "日本の通貨単位は？", options: ["ウォン", "円", "ドル"], correctAnswerIndex: 1),
-        QuizItem(question: "「WWW」は何の略？", options: ["World Wide Web", "Web Window World", "Wide Web World"], correctAnswerIndex: 0)
     ]
     
     @State private var currentQuestionIndex = 0
@@ -39,13 +34,42 @@ struct QuizView: View {
                 Spacer()
                 
                 // Question Text
+                Text(currentQuestion.question)
+                    .font(.system(size: 22, weight: .medium))
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                    .frame(minWidth: 100, alignment: .center)
                 
+                Spacer()
                 
                 // Feedback Message Area
+                Text(isCorrect ? "正解！" : "不正解... 正解は「\(currentQuestion.options[currentQuestion.correctAnswerIndex])」")
+                    .font(.headline)
+                    .padding(10)
+                    .background(.thinMaterial)
+                    .foregroundStyle(Color(isCorrect ? .green : .red))
+                    .clipShape(.rect(cornerRadius: 10))
+                    .opacity(isShowingFeedback ? 1 : 0)
                 
+                Spacer()
                 
                 // Answer Options
-                
+                VStack(spacing: 16) {
+                    ForEach(0..<currentQuestion.options.count, id: \.self) { index in
+                        Button {
+                            answerTapped(index)
+                        } label: {
+                            Text(currentQuestion.options[index])
+                                .font(Font.system(size: 18, weight: .bold))
+                                .foregroundStyle(Color.background)
+                                .frame(maxWidth: .infinity, minHeight: 70)
+                                .background(.white)
+                                .clipShape(.rect(cornerRadius: 10))
+                        }
+                        .disabled(isShowingFeedback)
+                    }
+                }
             }
             .padding()
         }
@@ -55,6 +79,28 @@ struct QuizView: View {
         }
     }
     // ボタンがタップされたときの処理
+    private func answerTapped(_ index: Int) {
+        isShowingFeedback = true
+        
+        if index == currentQuestion.correctAnswerIndex {
+            isCorrect = true
+            score += 1
+        } else {
+            isCorrect = false
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            isShowingFeedback = false
+            
+            if currentQuestionIndex < quizItems.count - 1 {
+                currentQuestionIndex += 1
+                isShowingFeedback = false
+            } else {
+                // 全問終了
+                currentScreen = .result
+            }
+        }
+    }
     
 }
 
