@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct QuizView: View {
     @Binding var currentScreen: Screen
     @Binding var score: Int
@@ -8,10 +9,10 @@ struct QuizView: View {
     // ここにクイズの問題と選択肢、正解を定義します
     let quizItems: [QuizItem] = [
         QuizItem(question: "iPhoneを開発している企業はどこ？", options: ["Google", "Apple", "Samsung"], correctAnswerIndex: 1),
-        QuizItem(question: "日本の首都はどこ？", options: ["大阪", "東京", "名古屋"], correctAnswerIndex: 1),
-        QuizItem(question: "地球は太陽の周りを何年で一周する？", options: ["1年", "30日", "10年"], correctAnswerIndex: 0),
-        QuizItem(question: "プログラミング言語Swiftを開発した企業は？", options: ["Apple", "Microsoft", "Google"], correctAnswerIndex: 0),
-        QuizItem(question: "富士山の高さに最も近い数値は？", options: ["1,500m", "3,776m", "5,000m"], correctAnswerIndex: 1),
+        QuizItem(question: "Appleの共同創業者は誰？（一人選んでください）", options: ["ビル・ゲイツ", "スティーブ・ウォズニアック", "ラリー・ペイジ"], correctAnswerIndex: 1),
+        QuizItem(question: "最初のMacintoshが発表された年は？", options: ["1976年", "1984年", "1998年"], correctAnswerIndex: 1),
+        QuizItem(question: "Appleの本社があるカリフォルニア州の都市は？", options: ["サンフランシスコ", "パロアルト", "クパチーノ"], correctAnswerIndex: 2),
+        QuizItem(question: "SwiftUIが最初に発表されたWWDCの年は？", options: ["2017", "2019", "2021"], correctAnswerIndex: 1)
     ]
     
     @State private var currentQuestionIndex = 0
@@ -36,22 +37,22 @@ struct QuizView: View {
                 // Question Text
                 Text(currentQuestion.question)
                     .font(.system(size: 22, weight: .medium))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color(.white))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
-                    .frame(minWidth: 100, alignment: .center)
+                    .frame(minHeight: 100, alignment: .center)
                 
                 Spacer()
                 
                 // Feedback Message Area
                 Text(isCorrect ? "正解！" : "不正解... 正解は「\(currentQuestion.options[currentQuestion.correctAnswerIndex])」")
-                    .font(.headline)
-                    .padding(10)
-                    .background(.thinMaterial)
-                    .foregroundStyle(Color(isCorrect ? .green : .red))
-                    .clipShape(.rect(cornerRadius: 10))
-                    .opacity(isShowingFeedback ? 1 : 0)
-                
+                         .font(.headline)
+                         .padding(10)
+                         .background(.thinMaterial)
+                         .foregroundStyle(Color(isCorrect ? .green : .red))
+                         .clipShape(.rect(cornerRadius: 10))
+                         .opacity(isShowingFeedback ? 1 : 0)
+                     
                 Spacer()
                 
                 // Answer Options
@@ -61,8 +62,8 @@ struct QuizView: View {
                             answerTapped(index)
                         } label: {
                             Text(currentQuestion.options[index])
-                                .font(Font.system(size: 18, weight: .bold))
-                                .foregroundStyle(Color.background)
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(Color(.background))
                                 .frame(maxWidth: .infinity, minHeight: 70)
                                 .background(.white)
                                 .clipShape(.rect(cornerRadius: 10))
@@ -90,19 +91,19 @@ struct QuizView: View {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            isShowingFeedback = false
-            
-            if currentQuestionIndex < quizItems.count - 1 {
-                currentQuestionIndex += 1
-                isShowingFeedback = false
-            } else {
-                // 全問終了
-                currentScreen = .result
-            }
-        }
+              isShowingFeedback = false
+              
+              if currentQuestionIndex < quizItems.count - 1 {
+                  currentQuestionIndex += 1
+                  isShowingFeedback = false
+              } else {
+                  // 全問終了
+                  currentScreen = .result
+              }
+          }
     }
-    
 }
+
 
 // MARK: - Preview
 #Preview {
@@ -119,4 +120,3 @@ struct QuizView: View {
         )
     }
 }
-
