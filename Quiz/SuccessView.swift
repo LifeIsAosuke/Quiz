@@ -1,10 +1,15 @@
+//
+//  SuccessView.swift
+//  Quiz
+//
+//  Created by A S on 2025/08/10.
+//
+
 import SwiftUI
 
-struct ResultView: View {
+struct SuccessView: View {
     @Binding var currentScreen: Screen
     @Binding var score: Int
-    
-    let totalQuestions: Int
     
     var body: some View {
         ZStack {
@@ -24,6 +29,9 @@ struct ResultView: View {
                     Text("\(score) / 10 問正解")
                         .font(.system(size: 28, weight: .medium))
                         .foregroundStyle(.white)
+                    
+                    Text("成功画面だよ〜")
+                        .font(.system(size: 24, weight: .medium))
                 }
                 
                 Spacer()
@@ -52,10 +60,9 @@ struct ResultView: View {
     ZStack {
         Color(.background)
             .ignoresSafeArea()
-        ResultView(
+        SuccessView(
             currentScreen: $currentScreen,
             score: $score,
-            totalQuestions: 5
         )
     }
 }

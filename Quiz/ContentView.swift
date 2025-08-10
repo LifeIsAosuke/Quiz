@@ -13,6 +13,8 @@ enum Screen {
     case start
     case quiz
     case result
+    case success
+    case failure
 }
 
 // MARK: - Main Content View
@@ -34,13 +36,25 @@ struct ContentView: View {
                 QuizView(
                     currentScreen: $currentScreen,
                     score: $score,
-                    totalQuestions: $totalQuestions
+           
                 )
             case .result:
                 ResultView(
                     currentScreen: $currentScreen,
                     score: $score,
                     totalQuestions: totalQuestions
+                )
+            case .success:
+                SuccessView(
+                    currentScreen: $currentScreen,
+                    score: $score,
+                
+                )
+            case .failure:
+                SuccessView(
+                    currentScreen: $currentScreen,
+                    score: $score,
+             
                 )
             }
         }
